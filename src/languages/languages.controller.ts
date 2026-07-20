@@ -5,7 +5,6 @@ import { LanguagesService } from './languages.service';
 import { CreateLanguageDto } from './dto/create-language.dto';
 
 @Controller('languages')
-@UseGuards(AuthGuard('jwt'))
 export class LanguagesController {
   constructor(private languagesService: LanguagesService) {}
 
@@ -15,6 +14,7 @@ export class LanguagesController {
   }
 
   @Get('template')
+  @UseGuards(AuthGuard('jwt'))
   async downloadTemplate(@Res() res: Response) {
     const translations = await this.languagesService.getTemplate();
     res.set('Content-Disposition', 'attachment; filename="translation-template.json"');
@@ -27,6 +27,7 @@ export class LanguagesController {
   }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   create(@Body() dto: CreateLanguageDto) {
     return this.languagesService.create(dto);
   }
